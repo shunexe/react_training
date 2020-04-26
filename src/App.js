@@ -4,17 +4,17 @@ import './App.css';
 import _ from 'lodash'
 
 class App extends Component {
-  data =[];
+  data =[
+    "This is a list sample",
+    "これはリストのサンプルです",
+    "配列をリストに変換します"
+  ];
+
   msgStyle = {
     fontSize:"20pt",
     color:"#900",
     margin:"20px 0px",
     padding:"5px",
-  }
-  area ={
-    width:"500px",
-    height:"500px",
-    border:"1px solid blue"
   }
 
   constructor(props){
@@ -22,38 +22,63 @@ class App extends Component {
     this.state={
       list:this.data
     };
-    this.doAction=this.doAction.bind(this);
-  }
-  doAction(e){
-    let x=e.pageX;
-    let y=e.pageY;
-    let newData = _.cloneDeep(this.state.list)
-    newData.push({x:x,y:y});//参照渡しになってる→値渡し　
-    this.setState(({
-      list:newData
-    }));
-  }
-
-  draw(d){
-    let s={
-      position:"absolute",
-      left:(d.x-25)+"px",
-      top:(d.y-25)+"px",
-      width:"50px",
-      height:"50px",
-      backgroundColor:"#66f3"
-    };
-    return <div style={s}></div>;
   }
 
   render(){
     return <div>
       <h1>React</h1>
-      <h2 style={this.msgStyle}>show rect.</h2>
+      <h2 style={this.msgStyle}>show list.</h2>
       <div style={this.area} onClick={this.doAction}>
-        {this.state.list.map((value)=>this.draw(value))}
+        <List title="サンプルリスト" data={this.state.list} />
       </div>
     </div>;
+  }
+}
+
+class List extends Component{
+  number=1;
+
+  title={
+    fontSize:"20pt",
+    fontWeight:"bold",
+    color:"blue"
+  };
+
+  render(){
+    let data = this.props.data;
+    return(
+      <div>
+        <p style={this.title}>{this.props.title}</p>
+          <ul>
+            {data.map((item)=>
+              <Item number={this.number++} value={item} key={this.number} />
+            )}
+          </ul>
+      </div>
+    )
+  }
+}
+
+class Item extends Component{
+  li = {
+    listStyleType:"square",
+    fontSize:"16pt",
+    color:"#06",
+    margin:"0px",
+    padding:"0px"
+  };
+  num = {
+    fontWeight:"bold",
+    color:"red"
+  }
+
+  render(){
+    return(
+      <li style={this.li}>
+        <span style={this.num}>[{this.props.number}]</span>
+        {this.props.value}
+      </li>
+    )
   }
 }
 
